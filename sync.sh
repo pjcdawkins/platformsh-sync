@@ -61,6 +61,12 @@ drush $LOCAL_ALIAS sql-drop -y
 echo "Syncing database from remote"
 drush sql-sync $REMOTE_ALIAS $LOCAL_ALIAS -y
 
+# This is here in case the production site uses Redis caching.
+echo "Clearing DB caches"
+for TABLE in cache cache_bootstrap cache_field cache_rules; do
+  drush $LOCAL_ALIAS sqlq "TRUNCATE TABLE $TABLE" || true
+done
+
 drush $LOCAL_ALIAS cc drush
 
 echo "Running DB updates"
