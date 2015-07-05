@@ -75,8 +75,16 @@ drush $LOCAL_ALIAS updb -y
 echo "Sanitizing database"
 drush $LOCAL_ALIAS sql-sanitize -y
 
-echo "Reverting features (?)"
-drush $LOCAL_ALIAS fra
+if [ "$YES" = 1 ]; then
+  drush $LOCAL_ALIAS fra -y
+else
+  read -p "Revert all features? [y/N] " -r
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    drush $LOCAL_ALIAS fra -y
+  else
+    drush $LOCAL_ALIAS fra
+  fi
+fi
 
 echo "Clearing the cache again, just to be sure"
 drush $LOCAL_ALIAS cc all
