@@ -27,7 +27,7 @@ else
 	exit 1
 fi
 
-ALIAS_GROUP="$(platform drush-aliases -g)"
+ALIAS_GROUP="$(platform drush-aliases --pipe)"
 if [ ! $? = 0 ]; then
 	echo "Failed to get Drush alias group"
 	exit 1
